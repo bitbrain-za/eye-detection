@@ -10,6 +10,9 @@ config.read('config.ini')
 
 rtsp_src = config['SOURCE']['uri']
 
+notifications = config['NOTIFICATIONS'].getboolean('enabled')
+display = config['SINK'].getboolean('enabled')
+
 token = config['TELEGRAM']['token']
 groupId = config['TELEGRAM']['groupId']
 
@@ -63,11 +66,12 @@ while True:
                     if(now - timestamp).total_seconds() > trigger_window:
                         data.remove(timestamp)
                 count = len(data)
-                if (count > frames_to_trigger) and ((now - last_alert).total_seconds() > repeat_alert_minutes*60):
+                if (count > frames_to_trigger) and ((now - last_alert).total_seconds() > repeat_alert_minutes*60) and (notifications):
                     last_alert = datetime.now()
                     sendAlert(roi_orig, "Awake")
 
-        cv2.imshow('nanoCam',frame)
+        if display:
+            cv2.imshow('nanoCam',frame)
     if cv2.waitKey(1)==ord('q'):
         break
 cam.release()
