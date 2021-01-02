@@ -15,44 +15,29 @@ The file "config.ini" contains all the configurabale values for the app.
 For the uri, just fill in exactly what you would put into VLC to see the stream.
 Example:
 
-[SOURCE]
 uri = rtsp://192.168.1.68:554/live/0/SUB
 
+## Sink
+
+Set enabled to yes to show the output on screen. Set to no for headless operation.
 
 ## Notifications
 
-For the telegram bot, you can create your own bot and group and give the details here.
+For the telegram bot, you can create your own bot and group and supply the details under the `TELEGRAM` section of the options.
 
-[TELEGRAM]
-token = <>
-groupId = <>
-
-Use the below to tweak the timing for notifications.
+To change the notifaction frequency modify the values in the `NOTIFICATIONS` section.
 The 'time_to_arm' bit is not yet implemented, system is always armed.
 
-[NOTIFICATIONS]
-#time with no eye detection before we arm the system (minutes)
-time_to_arm=10
-#once armed, how many frames before we trigger an alert
-frames_to_trigger=1
-#the window in which to count the above (seconds)
-trigger_window=10
-fps=25
-repeat_alert_minutes=1
+time_to_arm: (minutes) This is the period of no eye detection before the system will start counting eye detections.
+frames_to_trigger: (integer) The number of positive detections in the window after which an event will be triggered
+trigger_window: (seconds) the window used for the above
+fps: (integer) Frames per a second to process
+repeat_alert_minutes: (minutes) The number of minutes to suppress notifications for after a positive notice.
 
 ## Detection
 
 To tweak this bit, it would be good to have a display attached to the nano.
 Faces will be outlined in red, eyes in blue.
-
-[DETECTOR]
-#fiddle with these numbers to tune the system.
-#Scale factor indicates how much the image is reduced at each scale
-#min_neghbours is a measure of certainty
-face_scale_factor=1.3
-face_min_neighbours=5
-eye_scale_factor=2
-eye_min_neighbours=5
 
 # Run the app
 
