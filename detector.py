@@ -41,9 +41,6 @@ face_min_neighbours=config['DETECTOR']['face_min_neighbours']
 eye_scale_factor=config['DETECTOR']['eye_scale_factor']
 eye_min_neighbours=config['DETECTOR']['eye_min_neighbours']
 
-print(str(face_scale_factor))
-exit()
-
 def sendAlert(frame, message):
     bot = telebot.TeleBot(token)
     bot.config['api_key'] = token
