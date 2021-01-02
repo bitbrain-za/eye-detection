@@ -44,5 +44,5 @@ For now, the app only runs with a display attached. A headless option will be co
 
 From the terminal, run:
 ```bash
-python3 detect.py
+python3 detector.py
 ```
