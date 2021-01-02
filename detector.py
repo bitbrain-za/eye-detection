@@ -28,9 +28,6 @@ def sendAlert(frame, message):
     bot = telebot.TeleBot(token)
     bot.config['api_key'] = token
     ret = bot.send_message(groupId, message)
-    # photo = cv2.imencode(".jpg", frame)
-    # ret = bot.send_photo(groupId, photo)
-    # print(ret)
 
 alert_backoff = timedelta(minutes=repeat_alert_minutes)
 last_alert=datetime.now()-alert_backoff
