@@ -16,7 +16,6 @@ display = config['SINK'].getboolean('enabled')
 token = config['TELEGRAM']['token']
 groupId = config['TELEGRAM']['groupId']
 
-time_to_arm = int(config['NOTIFICATIONS']['time_to_arm'])
 frames_to_trigger = int(config['NOTIFICATIONS']['frames_to_trigger'])
 trigger_window = int(config['NOTIFICATIONS']['trigger_window'])
 fps = int(config['NOTIFICATIONS']['fps'])
