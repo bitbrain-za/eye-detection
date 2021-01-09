@@ -21,7 +21,8 @@ uri = rtsp://192.168.1.68:554/live/0/SUB
 
 Set enabled to yes to show the output on screen. Set to no for headless operation.
 
-To store the current frame as a jpeg, use the `keep_frame` options in the config
+to enable web output set `web_output` to yes and supply an IP and a port
+
 
 ## Notifications
 
