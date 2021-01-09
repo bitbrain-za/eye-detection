@@ -21,6 +21,8 @@ uri = rtsp://192.168.1.68:554/live/0/SUB
 
 Set enabled to yes to show the output on screen. Set to no for headless operation.
 
+To store the current frame as a jpeg, use the `keep_frame` options in the config
+
 ## Notifications
 
 For the telegram bot, you can create your own bot and group and supply the details under the `TELEGRAM` section of the options.

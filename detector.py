@@ -12,6 +12,9 @@ camera_uri = config['SOURCE']['uri']
 
 notifications = config['NOTIFICATIONS'].getboolean('enabled')
 display = config['SINK'].getboolean('enabled')
+keep_frame = config['SINK'].getboolean('keep_frame')
+if keep_frame:
+    output_location = config['SINK']['keep_frame_location']
 
 token = config['TELEGRAM']['token']
 groupId = config['TELEGRAM']['groupId']
@@ -73,6 +76,9 @@ while True:
                         last_alert = datetime.now()
                         message = "Open eyes spotted. Stream: " + camera_uri
                         sendAlert(roi_orig, message)
+
+            if keep_frame:
+                cv2.imwrite(output_location, frame)
 
             if display:
                 cv2.imshow('nanoCam',frame)
