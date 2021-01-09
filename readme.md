@@ -40,8 +40,6 @@ Faces will be outlined in red, eyes in blue.
 
 # Run the app
 
-For now, the app only runs with a display attached. A headless option will be coming soon.
-
 From the terminal, run:
 ```bash
 python3 detector.py

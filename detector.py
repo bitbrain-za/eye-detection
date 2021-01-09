@@ -52,30 +52,31 @@ while True:
 
     if ((now - last_run).total_seconds()) > spf:
         ret, frame = cam.read()
-        monochrome=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        last_run = now
-        faces=face_cascade.detectMultiScale(monochrome, face_scale_factor, face_min_neighbours)
-        for (x,y,w,h) in faces:
-            cv2.rectangle(frame, (x, y) , (x+w, y+h), (0,0,255), 2)
-            roi=monochrome[y:y+h, x:x+h]
-            roi_orig=frame[y:y+h, x:x+h]
-            eyes=eye_cascade.detectMultiScale(roi, eye_scale_factor, eye_min_neighbours)
-            for(xE, yE, wE, hE) in eyes:
-                cv2.rectangle(roi_orig, (xE, yE) , (xE+wE, yE+hE), (255,0,0), 1)
-            if 2 == len(eyes):
-                data.append(now)
-                for (timestamp) in data:
-                    if(now - timestamp).total_seconds() > trigger_window:
-                        data.remove(timestamp)
-                count = len(data)
-                if (count > frames_to_trigger) and ((now - last_alert).total_seconds() > repeat_alert_minutes*60) and (notifications):
-                    last_alert = datetime.now()
-                    message = "Open eyes spotted. Stream: " + camera_uri
-                    sendAlert(roi_orig, message)
+        if ret:
+            monochrome=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            last_run = now
+            faces=face_cascade.detectMultiScale(monochrome, face_scale_factor, face_min_neighbours)
+            for (x,y,w,h) in faces:
+                cv2.rectangle(frame, (x, y) , (x+w, y+h), (0,0,255), 2)
+                roi=monochrome[y:y+h, x:x+h]
+                roi_orig=frame[y:y+h, x:x+h]
+                eyes=eye_cascade.detectMultiScale(roi, eye_scale_factor, eye_min_neighbours)
+                for(xE, yE, wE, hE) in eyes:
+                    cv2.rectangle(roi_orig, (xE, yE) , (xE+wE, yE+hE), (255,0,0), 1)
+                if 2 == len(eyes):
+                    data.append(now)
+                    for (timestamp) in data:
+                        if(now - timestamp).total_seconds() > trigger_window:
+                            data.remove(timestamp)
+                    count = len(data)
+                    if (count > frames_to_trigger) and ((now - last_alert).total_seconds() > repeat_alert_minutes*60) and (notifications):
+                        last_alert = datetime.now()
+                        message = "Open eyes spotted. Stream: " + camera_uri
+                        sendAlert(roi_orig, message)
 
-        if display:
-            cv2.imshow('nanoCam',frame)
-    if cv2.waitKey(1)==ord('q'):
-        break
+            if display:
+                cv2.imshow('nanoCam',frame)
+        if cv2.waitKey(1)==ord('q'):
+            break
 cam.release()
 cv2.destroyAllWindows()
