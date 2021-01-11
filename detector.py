@@ -154,4 +154,4 @@ if __name__ == '__main__':
 	t.start()
 
 	# start the flask app
-	app.run(host=ip, port=port, debug=True, threaded=True, use_reloader=False)
+	app.run(host=ip, port=port, debug=False, threaded=True, use_reloader=False)
