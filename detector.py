@@ -153,7 +153,7 @@ def detector():
 					eyes=eye_cascade.detectMultiScale(roi, eye_scale_factor, eye_min_neighbours)
 					for(xE, yE, wE, hE) in eyes:
 						cv2.rectangle(roi_orig, (xE, yE) , (xE+wE, yE+hE), (255,0,0), 1)
-					if 2 == len(eyes):
+					if len(eyes) > 1:
 						data.append(now)
 						for (timestamp) in data:
 							if(now - timestamp).total_seconds() > trigger_window:
