@@ -9,6 +9,32 @@ from flask import render_template
 import threading
 import argparse
 
+# bufferless VideoCapture
+class VideoCapture:
+
+	def __init__(self, name):
+		self.outputFrame = None
+		self.lock = threading.Lock()
+		self.cap = cv2.VideoCapture(name)
+		self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+		t = threading.Thread(target=self._reader)
+		t.daemon = True
+		t.start()
+
+	# read frames as soon as they are available, keeping only most recent one
+	def _reader(self):
+		while True:
+			ret, frame = self.cap.read()
+			if not ret:
+				break
+			with lock:
+				self.outputFrame = frame.copy()
+
+	def read(self):
+		with lock:
+			retval = self.outputFrame.copy()
+		return retval
+
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful when multiple browsers/tabs
 # are viewing the stream)
@@ -98,8 +124,7 @@ def detector():
 	frame_delay = timedelta(seconds=spf)
 	last_run = datetime.now()-frame_delay
 
-	cam = cv2.VideoCapture(camera_uri)
-	cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+	cam = VideoCapture(camera_uri)
 	data=[]
 	
 	face_cascade=cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -109,8 +134,8 @@ def detector():
 		now = datetime.now()
 
 		if ((now - last_run).total_seconds()) > spf:
-			ret, frame = cam.read()
-			if ret:
+			frame = cam.read()
+			if True:
 				monochrome=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 				last_run = now
 				faces=face_cascade.detectMultiScale(monochrome, face_scale_factor, face_min_neighbours)
