@@ -8,6 +8,7 @@ from flask import Flask
 from flask import render_template
 import threading
 import argparse
+from scipy import ndimage
 
 # bufferless VideoCapture
 class VideoCapture:
@@ -86,6 +87,7 @@ def detector():
 	config.sections()
 	config.read('config.ini')
 	camera_uri = config['SOURCE']['uri']
+	angle = int(config['SOURCE']['angle'])
 
 	notifications = config['NOTIFICATIONS'].getboolean('enabled')
 	display = config['SINK'].getboolean('enabled')
@@ -135,6 +137,11 @@ def detector():
 
 		if ((now - last_run).total_seconds()) > spf:
 			frame = cam.read()
+
+			if angle != 0:
+				#rotation angle in degree
+				frame = ndimage.rotate(frame, angle)
+
 			if True:
 				monochrome=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 				last_run = now
