@@ -99,6 +99,7 @@ def detector():
 	last_run = datetime.now()-frame_delay
 
 	cam = cv2.VideoCapture(camera_uri)
+	cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 	data=[]
 	
 	face_cascade=cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -131,8 +132,6 @@ def detector():
 							message = "Open eyes spotted. Stream: " + camera_uri
 							sendAlert(roi_orig, message)
 
-				if keep_frame:
-					cv2.imwrite(output_location, frame)
 				with lock:
 					outputFrame = frame.copy()
 
